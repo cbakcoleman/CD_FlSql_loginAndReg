@@ -59,7 +59,7 @@
                 <div class='card p-3 bg-dark form-group' style='width: 20rem'>
                     <h3 class='text-primary d-flex justify-content-center'>Login</h3>
                     <form action='/login' method='post' class='text-light'>
-                        {% for message in get_flashed_messages() %}
+                        {% for message in get_flashed_messages(category_filter = ['login']) %}
                             <p class='alert alert-danger'>{{ message }}</p>
                         {% endfor %}
                         <label class='mt-2' for='email'>Email:</label>

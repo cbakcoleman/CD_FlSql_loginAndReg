@@ -23,8 +23,10 @@ def add_user():
         'password' : password_hash
     }
 
-    User.add_user(data)
-    return redirect('/success')
+    user_id = User.add_user(data)
+    session['user_id'] = user_id
+
+    return redirect(f'/success/{user_id}')
 
 @app.route('/login', methods=['post'])
 def login():
@@ -32,18 +34,25 @@ def login():
     user = User.get_by_email(data)
 
     if not user:
-        flash('Invalid login entry!')
+        flash('Invalid login entry!', 'login')
         return redirect('/')
     if not bcrypt.check_password_hash(user.password, request.form['password']):
-        flash('Invalid login entry!')
+        flash('Invalid login entry!', 'login')
         return redirect('/')
 
     session['user_id'] = user.id
 
     return redirect(f'/success/{session["user_id"]}')
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
+
 @app.route('/success/<id>')
 def success(id):
+    if not session['user_id']:
+        return redirect('/')
     user = User.get_by_id({'id' :id}) 
     return render_template('success.html', user = user)
 
