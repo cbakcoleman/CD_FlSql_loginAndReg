@@ -12,7 +12,6 @@ class User:
         self.last_name = data['last_name']
         self.email = data['email']
         self.password = data['password']
-        self.confirm_password = data['confirm_password']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
@@ -42,10 +41,21 @@ class User:
         return new_user
 
     @classmethod
-    def get_user(cls, data):
+    def get_by_id(cls, data):
         query = 'SELECT * FROM users WHERE id = %(id)s ;'
         results = connectToMySQL('loginAndReg_schema').query_db(query, data)
         return cls(results[0])
+
+    @classmethod
+    def get_by_email(cls, data):
+        query = 'SELECT * FROM users WHERE email = %(email)s'
+        results = connectToMySQL('loginAndReg_schema').query_db(query, data)
+
+        if len(results) < 1:
+                return False
+
+        return cls(results[0])
+
 
         
         

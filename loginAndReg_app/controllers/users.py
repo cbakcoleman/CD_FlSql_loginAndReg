@@ -26,15 +26,24 @@ def add_user():
     User.add_user(data)
     return redirect('/success')
 
-@app.route('login', methods=['post'])
+@app.route('/login', methods=['post'])
 def login():
     data = { "email" : request.form["email"] }
-    valid_user = User.get_by_email(data)
-    if not valid_user:
-        flash('Invalid Email or Password')
-        
+    user = User.get_by_email(data)
 
-@app.route('/success')
-def success():
-    #ind_user = User.get_user({"id" : id })
-    return render_template('success.html')
+    if not user:
+        flash('Invalid login entry!')
+        return redirect('/')
+    if not bcrypt.check_password_hash(user.password, request.form['password']):
+        flash('Invalid login entry!')
+        return redirect('/')
+
+    session['user_id'] = user.id
+
+    return redirect(f'/success/{session["user_id"]}')
+
+@app.route('/success/<id>')
+def success(id):
+    user = User.get_by_id({'id' :id}) 
+    return render_template('success.html', user = user)
+
