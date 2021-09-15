@@ -19,26 +19,32 @@
                         <label class='mt-2' for='first_name'>First Name:</label>
                         <input type='text' class='form-control' name='first_name'>
                         {% for message in get_flashed_messages(category_filter = ['first_name']) %}
-                            <p class='alert alert-warning'>{{ message }}</p>
+                            <p class='alert alert-danger'>{{ message }}</p>
                         {% endfor %}
 
                         <label class='mt-2' for='last_name'>Last Name:</label>
                         <input type='text' class='form-control' name='last_name'>
                         {% for message in get_flashed_messages(category_filter = ['last_name']) %}
-                            <p class='alert alert-warning'>{{ message }}</p>
+                            <p class='alert alert-danger'>{{ message }}</p>
                         {% endfor %}
 
                         <label class='mt-2' for='email'>Email:</label>
                         <input type='text' class='form-control' name='email'>
-                        {% for message in get_flashed_messages(category_filter = ['email]) %}
-                            <p class='alert alert-warning'>{{ message }}</p>
+                        {% for message in get_flashed_messages(category_filter = ['email']) %}
+                            <p class='alert alert-danger'>{{ message }}</p>
                         {% endfor %}
 
                         <label class='mt-2' for='password'>Password:</label>
                         <input type='text' class='form-control' name='password'>
+                        {% for message in get_flashed_messages(category_filter = ['password']) %}
+                            <p class='alert alert-danger'>{{ message }}</p>
+                        {% endfor %}
 
                         <label class='mt-2' for='confirm_password'>Confirm Password:</label>
                         <input type='text' class='form-control' name='confirm_password'>
+                        {% for message in get_flashed_messages(category_filter = ['confirm_password']) %}
+                            <p class='alert alert-danger'>{{ message }}</p>
+                        {% endfor %}
 
                         <div class='mt-3 d-flex justify-content-center'>
                             <input type='submit' class='btn btn-info' value='Register'>

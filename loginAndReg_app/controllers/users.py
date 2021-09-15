@@ -10,13 +10,31 @@ bcrypt = Bcrypt(app)
 def home():
     return render_template('index.html')
 
-@app.route('register_user', methods=['post'])
+@app.route('/register', methods=['post'])
 def add_user():
     if not User.validate_user(request.form):
         return redirect('/')
-    User.add_user(request.form)
+
+    password_hash = bcrypt.generate_password_hash(request.form['password'])
+    data = {
+        'first_name' : request.form['first_name'],
+        'last_name' : request.form['last_name'],
+        'email' : request.form['email'],
+        'password' : password_hash
+    }
+
+    User.add_user(data)
     return redirect('/success')
+
+@app.route('login', methods=['post'])
+def login():
+    data = { "email" : request.form["email"] }
+    valid_user = User.get_by_email(data)
+    if not valid_user:
+        flash('Invalid Email or Password')
+        
 
 @app.route('/success')
 def success():
+    #ind_user = User.get_user({"id" : id })
     return render_template('success.html')
